@@ -51,25 +51,13 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
         } else if (s.contains("Generar num. N xifres")) {
             vis.notificar(s);
         } else if (s.contains("Determinar primalitat")) {
-            if (con != null) {
-                con.notificar(s);
-                con = null;
-            }
+            vis.notificar(s);
         } else if (s.contains("Generar num. fort")) {
-            if (con != null) {
-                con.notificar(s);
-                con = null;
-            }
+            vis.notificar(s);
         } else if (s.contains("Factoritzar num. fort")) {
-            if (con != null) {
-                con.notificar(s);
-                con = null;
-            }
+            vis.notificar(s);
         } else if (s.contains("Graficar cost factorització")) {
-            if (con != null) {
-                con.notificar(s);
-                con = null;
-            }
+            vis.notificar(s);
         }
     }
 

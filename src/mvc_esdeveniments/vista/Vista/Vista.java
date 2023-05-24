@@ -13,6 +13,7 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigInteger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -42,9 +43,8 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
     private GraphPanel graphPanel;
 
     private JDialog d;
-    
-//    JTextField numNxifres;
 
+//    JTextField numNxifres;
     public Vista(String s, MVC_Esdeveniments p) {
         super(s);
         prog = p;
@@ -85,7 +85,6 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
 //        xifres.add(boto1);
 //        numNxifres = new JTextField();
 //        xifres.add(numNxifres);
-
         JPanel botonera = new JPanel(new GridLayout(0, 1));
         JButton boto1 = new JButton("Generar num. N xifres");
         boto1.addActionListener(this);
@@ -160,10 +159,10 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
                 public void actionPerformed(ActionEvent ae) {
                     if (!nXifres.getText().isBlank()) {
                         d.dispose();
-                        d=null;
+                        d = null;
                         prog.getControl().generarNumNXifres(Integer.parseInt(nXifres.getText()));
 //                        numNxifres.setText(""+prog.getModel().getNumNXifres());
-                        textPanel.getTextArea().setText(""+prog.getModel().getNumNXifres());
+                        textPanel.getTextArea().setText("Número de " + nXifres.getText() + " xifres generat:\n" + prog.getModel().getNumNXifres());
                     }
 
                 }
@@ -178,7 +177,38 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
             // set visibility of dialog
             d.setVisible(true);
             d.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+        } else if (s.contentEquals("Determinar primalitat")) {
+            String aux = "";
+            aux += "La primalidad del número " + prog.getModel().getNumNXifres() + " es " + prog.getControl().esPrimo(prog.getModel().getNumNXifres().toString());
+            textPanel.getTextArea().setText(aux);
+        } else if (s.contentEquals("Generar num. fort")) {
+            prog.getControl().generarNumFort();
+            String aux = "";
+            aux += "El número fort generat és:\n" + prog.getModel().getNumDuro();
+            textPanel.getTextArea().setText(aux);
+        } else if (s.contentEquals("Factoritzar num. fort")) {
+            prog.getControl().start();
+        } else if (s.contentEquals("Graficar cost factorització")) {
+            prog.getModel().getNumero().add(new BigInteger("1236"));
+            prog.getModel().getNumero().add(new BigInteger("56754"));
+            prog.getModel().getNumero().add(new BigInteger("8281247744"));
+            for (BigInteger numero : prog.getModel().getNumero()) {
+                prog.getControl().factorizar(numero.toString());
+            }
+//            // voy a factorizar
+//            prog.getControl().factorizar("1236");
+//            // voy a factorizar
+//            prog.getControl().factorizar("56754");
+//            // voy a factorizar
+//            prog.getControl().factorizar("8281247744");
+            option="Graf";
+            pinta();
+//            prog.getModel().getTiempo().clear();
         }
+    }
+
+    public TextPanel getTextPanel() {
+        return textPanel;
     }
 
     /**
@@ -200,7 +230,7 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
                 this.add(textPanel);
                 break;
             case "Graf":
-                graphPanel = new GraphPanel(PANEL_W, PANEL_H, this.prog.getModel(), this);
+                graphPanel = new GraphPanel(PANEL_W, PANEL_H, prog);
                 this.add(graphPanel);
                 break;
             default:
