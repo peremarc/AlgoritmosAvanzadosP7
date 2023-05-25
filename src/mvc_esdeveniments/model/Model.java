@@ -18,7 +18,7 @@ public class Model implements PerEsdeveniments {
     private BigInteger numNXifres;
     private BigInteger numDuro;
     private ArrayList<Long> tiempo;
-    private ArrayList<BigInteger> numero;
+    private ArrayList<Long> numero;
 
     public Model(MVC_Esdeveniments p) {
         prog = p;
@@ -51,7 +51,7 @@ public class Model implements PerEsdeveniments {
     public ArrayList<Long> getTiempo(){
         return tiempo;
     }
-    public ArrayList<BigInteger> getNumero(){
+    public ArrayList<Long> getNumero(){
         return numero;
     }
 

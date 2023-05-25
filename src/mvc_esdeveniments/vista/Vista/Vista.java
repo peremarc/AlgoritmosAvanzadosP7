@@ -14,6 +14,7 @@ import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigInteger;
+import java.util.Objects;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -78,13 +79,6 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
         mi3.addActionListener(this);
         menu1.add(mi3);
 
-//        JPanel xifres = new JPanel();
-//        xifres.setLayout(new GridLayout(0, 2));
-//        JButton boto1 = new JButton("Generar num. N xifres");
-//        boto1.addActionListener(this);
-//        xifres.add(boto1);
-//        numNxifres = new JTextField();
-//        xifres.add(numNxifres);
         JPanel botonera = new JPanel(new GridLayout(0, 1));
         JButton boto1 = new JButton("Generar num. N xifres");
         boto1.addActionListener(this);
@@ -101,6 +95,12 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
         JButton boto5 = new JButton("Graficar cost factorització");
         boto5.addActionListener(this);
         botonera.add(boto5);
+        JButton boto6 = new JButton("Aturar gràfica");
+        boto6.addActionListener(this);
+        botonera.add(boto6);
+        JButton boto7 = new JButton("Reprèn gràfica");
+        boto7.addActionListener(this);
+        botonera.add(boto7);
 
         JPanel panelLateral = new JPanel(new GridLayout(2, 1));
 //        panelLateral.add(xifres);
@@ -187,23 +187,16 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
             aux += "El número fort generat és:\n" + prog.getModel().getNumDuro();
             textPanel.getTextArea().setText(aux);
         } else if (s.contentEquals("Factoritzar num. fort")) {
-            prog.getControl().start();
+            prog.getControl().notificar("Factoritzar num. fort");
         } else if (s.contentEquals("Graficar cost factorització")) {
-            prog.getModel().getNumero().add(new BigInteger("1236"));
-            prog.getModel().getNumero().add(new BigInteger("56754"));
-            prog.getModel().getNumero().add(new BigInteger("8281247744"));
-            for (BigInteger numero : prog.getModel().getNumero()) {
-                prog.getControl().factorizar(numero.toString());
-            }
-//            // voy a factorizar
-//            prog.getControl().factorizar("1236");
-//            // voy a factorizar
-//            prog.getControl().factorizar("56754");
-//            // voy a factorizar
-//            prog.getControl().factorizar("8281247744");
-            option="Graf";
+            option = "Graf";
+            prog.getControl().notificar("Graficar cost factorització");
+        } else if (s.contentEquals("pinta")) {
             pinta();
-//            prog.getModel().getTiempo().clear();
+        } else if(s.contentEquals("Aturar gràfica")){
+            prog.getControl().aturarGrafica();
+        } else if(s.contentEquals("Reprèn gràfica")){
+            prog.getControl().reprenGrafica();
         }
     }
 

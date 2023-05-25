@@ -8,7 +8,6 @@
 package mvc_esdeveniments.control;
 
 import java.math.BigInteger;
-import java.util.HashSet;
 import java.util.Random;
 import mvc_esdeveniments.MVC_Esdeveniments;
 import mvc_esdeveniments.PerEsdeveniments;
@@ -16,20 +15,20 @@ import mvc_esdeveniments.PerEsdeveniments;
 public class Control extends Thread implements PerEsdeveniments {
 
     private MVC_Esdeveniments prog;
+    private String option;
+    private boolean continua;
+    private Long a;
 
     public Control(MVC_Esdeveniments p) {
         prog = p;
+        continua = true;
+        a = 400L;
     }
 
     @Override
     public void notificar(String s) {
-        if (s.startsWith("Calcular")) {
-            this.calcular();
-        }
-    }
-
-    private void calcular() {
-
+        option = s;
+        this.start();
     }
 
     public void generarNumNXifres(int n) {
@@ -47,6 +46,23 @@ public class Control extends Thread implements PerEsdeveniments {
         }
         prog.getModel().setNumNXifres(new BigInteger(aux));
 
+    }
+
+    public Long generarNumNXifres2(int n) {
+        String aux = "";
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            int r = random.nextInt(10);
+            if (i == 0 && r == 0) {
+                while (r == 0) {
+                    r = random.nextInt(10);
+                }
+            }
+            int k = 48 + r;
+            aux = aux + (char) (k);
+        }
+
+        return Long.valueOf(aux);
     }
 
     public boolean esPrimo(String numero) {
@@ -69,14 +85,21 @@ public class Control extends Thread implements PerEsdeveniments {
 
     @Override
     public void run() {
-        factoritzarNumFort();
+        switch (option) {
+            case "Factoritzar num. fort":
+                factoritzarNumFort();
+                break;
+            case "Graficar cost factorització":
+                costeAsintotico();
+                break;
+        }
     }
 
     public void factoritzarNumFort() {
         factorizar(prog.getModel().getNumDuro().toString());
     }
-    
-    public void factorizar(String n){
+
+    public long factorizar(String n) {
         BigInteger veces;
         long temps = System.nanoTime();
         PrimoProbable primprob = new PrimoProbable(100);
@@ -127,9 +150,10 @@ public class Control extends Thread implements PerEsdeveniments {
             }
         }
         long tiempo = (System.nanoTime() - temps);
-        prog.getModel().getTiempo().add(tiempo);
+//        prog.getModel().getTiempo().add(tiempo);
         aux += "\nHe tardado " + tiempo + "nanosec\n";
         prog.getVista().getTextPanel().getTextArea().setText(aux);
+        return tiempo;
     }
 
     private BigInteger sqrt(BigInteger x) {
@@ -145,6 +169,28 @@ public class Control extends Thread implements PerEsdeveniments {
             div2 = div;
             div = y;
         }
+    }
+
+    public void costeAsintotico() {
+        while (continua) {
+            a += 100;
+            prog.getModel().getNumero().add(a);
+            // Factorizamos el número generado y guardamos el tiempo
+            long tiempo = factorizar(a.toString());
+            prog.getModel().getTiempo().add(tiempo);
+            // Pintamos
+            prog.getVista().notificar("pinta");
+
+        }
+    }
+
+    public void aturarGrafica() {
+        continua = false;
+    }
+
+    public void reprenGrafica() {
+        continua = true;
+        notificar("Graficar cost factorització");
     }
 
 }

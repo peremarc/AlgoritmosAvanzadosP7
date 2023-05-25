@@ -58,6 +58,10 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
             vis.notificar(s);
         } else if (s.contains("Graficar cost factorització")) {
             vis.notificar(s);
+        } else if (s.contains("Aturar gràfica")) {
+            vis.notificar(s);
+        } else if (s.contains("Reprèn gràfica")) {
+            vis.notificar(s);
         }
     }
 
