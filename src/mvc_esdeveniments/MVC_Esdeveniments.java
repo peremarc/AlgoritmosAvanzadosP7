@@ -7,8 +7,9 @@
  */
 package mvc_esdeveniments;
 
-import mesurament.Mesurament;
+//import mesurament.Mesurament;
 import mvc_esdeveniments.control.Control;
+import mvc_esdeveniments.control.RSA;
 import mvc_esdeveniments.model.Model;
 import mvc_esdeveniments.vista.Vista.Vista;
 
@@ -26,13 +27,18 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
     }
 
     public static void main(String[] args) {
+        RSA rsa = new RSA(600);
+        rsa.generaPQ();
+        rsa.generarClaves();
+        rsa.encriptar("mensaje.txt");
+        rsa.leeArchivoEncript("pruebaEncriptado.txt");
         (new MVC_Esdeveniments()).inicio();
     }
 
     @Override
     public void notificar(String s) {
         if (s.contains("Obtenir ratio")) {
-            Mesurament.mesura();
+            //Mesurament.mesura();
         } else if (s.contains("Generar claus")) {
             if (con != null) {
                 con.notificar(s);

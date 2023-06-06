@@ -157,7 +157,7 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
             boto1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-                    if (!nXifres.getText().isBlank()) {
+                    if (!nXifres.getText().isEmpty()) {
                         d.dispose();
                         d = null;
                         prog.getControl().generarNumNXifres(Integer.parseInt(nXifres.getText()));
