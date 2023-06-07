@@ -1,4 +1,4 @@
-/**
+ /**
  * Practica 7 Algoritmos Avanzados - Ing Informática UIB
  *
  * @date 23/05/2023
@@ -11,6 +11,7 @@ package mvc_esdeveniments;
 import mvc_esdeveniments.control.Control;
 import mvc_esdeveniments.control.RSA;
 import mvc_esdeveniments.model.Model;
+import mvc_esdeveniments.model.ModelRSA;
 import mvc_esdeveniments.vista.Vista.Vista;
 
 public class MVC_Esdeveniments implements PerEsdeveniments {
@@ -27,7 +28,8 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
     }
 
     public static void main(String[] args) {
-        RSA rsa = new RSA(600);
+        ModelRSA mRSA = new ModelRSA();
+        RSA rsa = new RSA(600,mRSA);
         rsa.generaPQ();
         rsa.generarClaves();
         rsa.encriptar("mensaje.txt");

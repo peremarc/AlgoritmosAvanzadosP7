@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import mvc_esdeveniments.model.ModelRSA;
 
 /**
  *
@@ -28,40 +29,50 @@ public class RSA {
     private BigInteger phiEuler;
     private BigInteger e, d;
     private PrimoProbable pp = new PrimoProbable();
+    private ModelRSA mRSA;
 
-    public RSA(int tam) {
+    public RSA(int tam, ModelRSA m) {
         this.tamañoNum = tam;
+        this.mRSA = m;        
     }
 
     public void generaPQ() {
-        this.p = new BigInteger(tamañoNum, 50, new Random());
-        while (!pp.esPrimo(p)) {
-            this.p = new BigInteger(tamañoNum, 50, new Random());
+        BigInteger p, q;
+        p = new BigInteger(tamañoNum, 50, new Random());
+        while (!mRSA.getPp().esPrimo(p)) {
+            p = new BigInteger(tamañoNum, 50, new Random());
         }
-        this.q = new BigInteger(tamañoNum, 50, new Random());
-        while (!pp.esPrimo(p) && p.compareTo(q) == 0) {
-            this.p = new BigInteger(tamañoNum, 50, new Random());
+        q = new BigInteger(tamañoNum, 50, new Random());
+        while (!mRSA.getPp().esPrimo(p) && p.compareTo(q) == 0) {
+            p = new BigInteger(tamañoNum, 50, new Random());
         }
+        mRSA.setP(p);
+        mRSA.setQ(q);
     }
 
     public void generarClaves() {
+        BigInteger n, e,phiEuler;
         /* n = p*q */
-        this.n = p.multiply(q);
+        n = mRSA.getP().multiply(mRSA.getQ());
+        mRSA.setN(n);
 
         /* phi = (p-1)*(q-1) */
-        this.phiEuler = p.subtract(BigInteger.valueOf(1));
-        this.phiEuler = phiEuler.multiply(q.subtract(BigInteger.valueOf(1)));
-
+        phiEuler = mRSA.getP().subtract(BigInteger.valueOf(1));
+        phiEuler = phiEuler.multiply(mRSA.getQ().subtract(BigInteger.valueOf(1)));
+        mRSA.setPhiEuler(phiEuler);
+        
         /* Calculamos el exponente de la clave pública. Este tiene que ser
         coprimo con el valor de phi .*/
-        this.e = new BigInteger(2 * tamañoNum, new Random());
+        e = new BigInteger(2 * tamañoNum, new Random());
         while ((e.compareTo(phiEuler) != -1)
                 || e.gcd(phiEuler).compareTo(BigInteger.valueOf(1)) != 0) {
-            this.e = new BigInteger(2 * tamañoNum, new Random());
+            e = new BigInteger(2 * tamañoNum, new Random());
         }
+        mRSA.setE(e);
 
         /* d = e^(1 mod phi) */
-        this.d = e.modInverse(phiEuler);
+        d = e.modInverse(phiEuler);
+        mRSA.setD(d);
     }
 
     /* Usamos la clave públic e generada para encriptar */
@@ -100,7 +111,7 @@ public class RSA {
         BigInteger[] lineaEncript = new BigInteger[bigdigitos.length];
 
         for (i = 0; i < bigdigitos.length; i++) {
-            lineaEncript[i] = bigdigitos[i].modPow(e, n);
+            lineaEncript[i] = bigdigitos[i].modPow(mRSA.getE(), mRSA.getN());
         }
         return lineaEncript;
     }
@@ -110,7 +121,7 @@ public class RSA {
         BigInteger[] desencriptar = new BigInteger[msgEnc.length];
 
         for (int i = 0; i < desencriptar.length; i++) {
-            desencriptar[i] = msgEnc[i].modPow(d, n);
+            desencriptar[i] = msgEnc[i].modPow(mRSA.getD(), mRSA.getN());
         }
 
         char[] msg = new char[desencriptar.length];
