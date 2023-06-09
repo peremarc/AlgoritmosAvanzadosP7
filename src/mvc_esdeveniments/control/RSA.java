@@ -189,6 +189,7 @@ public class RSA {
             BufferedWriter writer = new BufferedWriter(new FileWriter("mensajeCompacto.txt"));
             for (String linea : contenido) {
                 writer.write(linea);
+                String s = descompactaLinea(linea);
                 writer.newLine();
             }
             writer.close();
@@ -218,8 +219,11 @@ public class RSA {
         String lineaDescomp = "";
         for (int i = 0; i < s.length(); i++) {
             char caracter = s.charAt(i);
-            int numero = ((int) caracter) - 65;
+            int numero = ((int) caracter) - 32;
             String pareja = String.valueOf(numero);
+            if (pareja.length() == 1) {
+                pareja = "0" + pareja;
+            }
             lineaDescomp += pareja;
         }
         return lineaDescomp;
@@ -230,7 +234,7 @@ public class RSA {
         linea = linea.replace(" ", "");
         for (int i = 0; i < linea.length(); i += 2) {
             String pareja = linea.substring(i, i + 2);
-            int numero = Integer.parseInt(pareja) + 65;
+            int numero = Integer.parseInt(pareja) + 32;
             char caracter = (char) numero;
             lineaComp += caracter;
         }
