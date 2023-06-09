@@ -33,7 +33,7 @@ public class RSA {
 
     public RSA(int tam, ModelRSA m) {
         this.tamañoNum = tam;
-        this.mRSA = m;        
+        this.mRSA = m;
     }
 
     public void generaPQ() {
@@ -51,7 +51,7 @@ public class RSA {
     }
 
     public void generarClaves() {
-        BigInteger n, e,phiEuler;
+        BigInteger n, e, phiEuler;
         /* n = p*q */
         n = mRSA.getP().multiply(mRSA.getQ());
         mRSA.setN(n);
@@ -60,7 +60,7 @@ public class RSA {
         phiEuler = mRSA.getP().subtract(BigInteger.valueOf(1));
         phiEuler = phiEuler.multiply(mRSA.getQ().subtract(BigInteger.valueOf(1)));
         mRSA.setPhiEuler(phiEuler);
-        
+
         /* Calculamos el exponente de la clave pública. Este tiene que ser
         coprimo con el valor de phi .*/
         e = new BigInteger(2 * tamañoNum, new Random());
@@ -94,7 +94,6 @@ public class RSA {
         }
         escribeFileEncript("pruebaEncriptado.txt", mensaje);
     }
-
 
     public BigInteger[] encriptarLinea(String linea) {
         int i;
@@ -142,7 +141,7 @@ public class RSA {
                 for (int j = 0; j < linea.length; j++) {
                     bufferedWriter.write(linea[j].toString());
                     bufferedWriter.write(" ");
-                }                
+                }
                 bufferedWriter.newLine();
             }
 
@@ -152,9 +151,7 @@ public class RSA {
         }
     }
 
-    public ArrayList<BigInteger[]> leeArchivoEncript(String file) {
-        ArrayList<BigInteger[]> result = new ArrayList<>();
-
+    public void leeArchivoEncript(String file) {
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -165,13 +162,79 @@ public class RSA {
                 String s = desencriptarLinea(lineaBigInt);
                 System.out.println(s);
             }
-
             bufferedReader.close();
         } catch (IOException e) {
             System.out.println("Ha ocurrido un error leyendo el archivo");
         }
+    }
 
-        return result;
+    public void compactaArchivo(String file) {
+        try {
+            ArrayList<String> contenido = new ArrayList<String>();
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                contenido.add(compactaLinea(line));
+            }
+            bufferedReader.close();
+            escribirArchivoCompacto(contenido);
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error leyendo el archivo");
+        }
+    }
+
+    public void escribirArchivoCompacto(ArrayList<String> contenido) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("mensajeCompacto.txt"));
+            for (String linea : contenido) {
+                writer.write(linea);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error al escribir el archivo: " + e.getMessage());
+        }
+    }
+
+    public void leerArchivoCompacto() {
+        try {
+            FileReader fileReader = new FileReader("mensajeCompacto.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String s = descompactaLinea(line);
+                //String s = desencriptarLinea(lineaBigInt);
+                System.out.println(s);
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error leyendo el archivo");
+        }
+    }
+
+    public String descompactaLinea(String s) {
+        String lineaDescomp = "";
+        for (int i = 0; i < s.length(); i++) {
+            char caracter = s.charAt(i);
+            int numero = ((int) caracter) - 65;
+            String pareja = String.valueOf(numero);
+            lineaDescomp += pareja;
+        }
+        return lineaDescomp;
+    }
+
+    public String compactaLinea(String linea) {
+        String lineaComp = "";
+        linea = linea.replace(" ", "");
+        for (int i = 0; i < linea.length(); i += 2) {
+            String pareja = linea.substring(i, i + 2);
+            int numero = Integer.parseInt(pareja) + 65;
+            char caracter = (char) numero;
+            lineaComp += caracter;
+        }
+        return lineaComp;
     }
 
     private BigInteger[] convertirLinea(String line) {

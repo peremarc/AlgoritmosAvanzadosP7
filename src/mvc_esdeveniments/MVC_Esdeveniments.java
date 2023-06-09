@@ -34,6 +34,8 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
         rsa.generarClaves();
         rsa.encriptar("mensaje.txt");
         rsa.leeArchivoEncript("pruebaEncriptado.txt");
+        rsa.compactaArchivo("pruebaEncriptado.txt");
+        rsa.leerArchivoCompacto();
         (new MVC_Esdeveniments()).inicio();
     }
 
