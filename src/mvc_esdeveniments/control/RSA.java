@@ -24,26 +24,38 @@ import mvc_esdeveniments.model.ModelRSA;
 public class RSA {
 
     //Variables
-    private int tamañoNum;
-    private BigInteger n, p, q;
-    private BigInteger phiEuler;
-    private BigInteger e, d;
-    private PrimoProbable pp = new PrimoProbable();
+    private final int tamañoNum;
+    private final PrimoProbable pp;
     private ModelRSA mRSA;
 
     public RSA(int tam, ModelRSA m) {
         this.tamañoNum = tam;
         this.mRSA = m;
+        this.pp = new PrimoProbable();
     }
-
+    
+    public RSA(int tam) {
+        this.tamañoNum = tam;
+        this.mRSA = null;
+        this.pp = new PrimoProbable();
+    }
+    
+    public boolean isModelReady(){
+        return mRSA != null;
+    }
+    
+    public void setmRSA(ModelRSA mRSA) {
+        this.mRSA = mRSA;
+    }
+    
     public void generaPQ() {
         BigInteger p, q;
         p = new BigInteger(tamañoNum, 50, new Random());
-        while (!mRSA.getPp().esPrimo(p)) {
+        while (!pp.esPrimo(p)) {
             p = new BigInteger(tamañoNum, 50, new Random());
         }
         q = new BigInteger(tamañoNum, 50, new Random());
-        while (!mRSA.getPp().esPrimo(p) && p.compareTo(q) == 0) {
+        while (!pp.esPrimo(p) && p.compareTo(q) == 0) {
             p = new BigInteger(tamañoNum, 50, new Random());
         }
         mRSA.setP(p);
@@ -51,7 +63,7 @@ public class RSA {
     }
 
     public void generarClaves() {
-        BigInteger n, e, phiEuler;
+        BigInteger n, e, d, phiEuler;
         /* n = p*q */
         n = mRSA.getP().multiply(mRSA.getQ());
         mRSA.setN(n);

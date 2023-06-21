@@ -4,22 +4,20 @@
  */
 package mvc_esdeveniments.model;
 
+import java.io.Serializable;
 import java.math.BigInteger;
-import mvc_esdeveniments.control.PrimoProbable;
 
 /**
  *
  * @author jfher
  */
-public class ModelRSA {
+public class ModelRSA implements Serializable{
     
     private BigInteger n, p, q;
     private BigInteger phiEuler;
     private BigInteger e, d;
-    private PrimoProbable pp;
     
     public ModelRSA(){
-        pp = new PrimoProbable();
     }
     
     public BigInteger getN() {
@@ -68,14 +66,6 @@ public class ModelRSA {
 
     public void setD(BigInteger d) {
         this.d = d;
-    }
-
-    public PrimoProbable getPp() {
-        return pp;
-    }
-
-    public void setPp(PrimoProbable pp) {
-        this.pp = pp;
     }
     
 }
