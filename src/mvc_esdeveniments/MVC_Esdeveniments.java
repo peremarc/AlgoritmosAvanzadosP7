@@ -8,6 +8,7 @@
 package mvc_esdeveniments;
 
 //import mesurament.Mesurament;
+import java.io.IOException;
 import mvc_esdeveniments.control.Control;
 import mvc_esdeveniments.control.RSA;
 import mvc_esdeveniments.model.Model;
@@ -23,10 +24,15 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
     private RSAVista rsaVis;
     private Control con;  // punter al Control del patró
 
-    private void inicio() {
+    private void inicio() throws IOException {
         mod = new Model(this);
         con = new Control(this);
         vis = new Vista("Pràctica 7", this);
+        ModelRSA m1 = new ModelRSA();
+        RSA rsa = new RSA(300,m1);
+        m1.escribirClaves("claves", m1);
+        ModelRSA m2 = m1.leerClaves("claves");
+        System.out.println(m1.getN() == m2.getN());
         vis.mostrar();
     }
     
@@ -36,7 +42,7 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
 
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         /*
         ModelRSA mRSA = new ModelRSA();
         RSA rsa = new RSA(600,mRSA);
@@ -48,7 +54,7 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
         rsa.leerArchivoCompacto();
         (new MVC_Esdeveniments()).inicio();
         */
-        
+        (new MVC_Esdeveniments()).inicio();
         (new MVC_Esdeveniments()).launch();
     }
 

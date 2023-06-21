@@ -27,45 +27,44 @@ import mvc_esdeveniments.MVC_Esdeveniments;
 import mvc_esdeveniments.MeuError;
 import mvc_esdeveniments.PerEsdeveniments;
 
-
 /**
  *
  * @author jordo
  */
-public class RSAVista extends JFrame implements PerEsdeveniments{
+public class RSAVista extends JFrame implements PerEsdeveniments {
 
     private final MVC_Esdeveniments prog;
-    
+
     private JButton BGenKey;
-    
+
     private JButton BSetFileToEncript;
     private JButton BClearFileEncript;
-    
+
     private JButton BSetFileToDesEncript;
     private JButton BClearFileDesEncript;
-    
+
     private JButton BEncriptar;
     private JButton BDesencriptar;
-    
+
     private PanelTexto panelDesencriptado;
     private PanelTexto panelEncriptado;
-    
+
     private JLabel FileEncripted;
     private JLabel FileToEncript;
-    
+
     private final int WIDTH = 1200;
     private final int HEIGHT = 800;
-    
-    public RSAVista(MVC_Esdeveniments prog){
+
+    public RSAVista(MVC_Esdeveniments prog) {
         this.prog = prog;
         initComponents();
     }
-    
+
     private void initComponents() {
         this.setSize(WIDTH, HEIGHT);
         this.setBackground(Color.LIGHT_GRAY);
         this.setTitle("Algoritmos Avanzados - Práctica 7");
-        
+
         this.setLayout(null);
         this.setResizable(false);
 
@@ -75,33 +74,33 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
         Titulo.setHorizontalAlignment(0);
         Titulo.setBounds(getWidth() / 2 - 200, 10, 400, 30);
         this.add(Titulo);
-        
+
         // PANEL ENCRIPTACION
         panelDesencriptado = new PanelTexto(50, 100, 500, 550);
         this.add(panelDesencriptado);
-        
+
         BSetFileToEncript = new JButton("Seleccionar Fichero");
         BSetFileToEncript.setBounds(50, 50, 320, 30);
         this.add(BSetFileToEncript);
-        
-        BClearFileEncript= new JButton("Clear");
+
+        BClearFileEncript = new JButton("Clear");
         BClearFileEncript.setBounds(400, 50, 150, 30);
         this.add(BClearFileEncript);
-        
+
         FileToEncript = new JLabel("FILE NOT SELECTED");
         FileToEncript.setFont(new Font("Britannic Bold", Font.BOLD, 12));
         FileToEncript.setBounds(50, 650, 400, 30);
         this.add(FileToEncript);
-                
+
         // PANEL DESENCRIPTACION
         panelEncriptado = new PanelTexto(650, 100, 500, 550);
         this.add(panelEncriptado);
-        
+
         BSetFileToDesEncript = new JButton("Seleccionar Fichero");
         BSetFileToDesEncript.setBounds(650, 50, 320, 30);
         this.add(BSetFileToDesEncript);
-        
-        BClearFileDesEncript= new JButton("Clear");
+
+        BClearFileDesEncript = new JButton("Clear");
         BClearFileDesEncript.setBounds(1000, 50, 150, 30);
         this.add(BClearFileDesEncript);
 
@@ -109,7 +108,7 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
         FileEncripted.setFont(new Font("Britannic Bold", Font.BOLD, 12));
         FileEncripted.setBounds(650, 650, 400, 30);
         this.add(FileEncripted);
-        
+
         ActionListener actionListenerFiles = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,91 +121,88 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
                     /* Cojo el archivo seleccionado */
                     File selectedFile = jf.getSelectedFile();
                     /* Actualizamos los paneles a partir del fichero Seleccionado */
-                    if(e.getSource().equals(BSetFileToEncript)){
+                    if (e.getSource().equals(BSetFileToEncript)) {
                         panelDesencriptado.setFile(selectedFile);
-                        panelDesencriptado.updateText();
+                      //  panelDesencriptado.updateText();
                         FileToEncript.setText("File: " + selectedFile.getName()
-                            + "   Size: " + selectedFile.length()
+                                + "   Size: " + selectedFile.length()
                         );
                         return;
                     }
 
                     panelEncriptado.setFile(selectedFile);
-                    panelEncriptado.updateText();
+                  //  panelEncriptado.updateText();
                     FileEncripted.setText("File: " + selectedFile.getName()
-                         + "   Size: " + selectedFile.length()); 
+                            + "   Size: " + selectedFile.length());
                 }
             }
         };
-        
+
         BSetFileToEncript.addActionListener(actionListenerFiles);
         BSetFileToDesEncript.addActionListener(actionListenerFiles);
-        
+
         ActionListener actionListenerClear = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource().equals(BClearFileEncript)){
+                if (e.getSource().equals(BClearFileEncript)) {
                     panelDesencriptado.setFile(null);
-                    panelDesencriptado.clearText();
+                    //panelDesencriptado.clearText();
                     FileToEncript.setText("FILE NOT SELECTED");
                     return;
                 }
-                
-                if(e.getSource().equals(BClearFileDesEncript)){
+
+                if (e.getSource().equals(BClearFileDesEncript)) {
                     panelEncriptado.setFile(null);
-                    panelEncriptado.clearText();
+                   // panelEncriptado.clearText();
                     FileEncripted.setText("FILE NOT SELECTED");
                 }
-        }};
-        
+            }
+        };
+
         BClearFileEncript.addActionListener(actionListenerClear);
         BClearFileDesEncript.addActionListener(actionListenerClear);
-        
-        
+
         // GENERAR CLAVES
         BGenKey = new JButton("Generar Clave");
         BGenKey.setBounds(500, 700, 200, 50);
         this.add(BGenKey);
-        
+
         // ENCRIPTAR FICHERO
         BEncriptar = new JButton("Encriptar Fichero");
         BEncriptar.setBounds(200, 700, 200, 50);
         this.add(BEncriptar);
-        
+
         // DESENCRIPTAR FICHERO
         BDesencriptar = new JButton("Desencriptar Fichero");
         BDesencriptar.setBounds(800, 700, 200, 50);
         this.add(BDesencriptar);
-        
-        
-        
+
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.revalidate();
         this.repaint();
-        
+
     }
-     
+
     @Override
     public void notificar(String s) {
         throw new UnsupportedOperationException("Not supported yet.");
-    }    
-           
+    }
 
-    protected class PanelTexto extends JPanel{
-        
+    protected class PanelTexto extends JPanel {
+
         private JTextArea textArea;
         private File FileRoute;
-        
-        public PanelTexto(int x, int y, int w, int h){
+
+        public PanelTexto(int x, int y, int w, int h) {
             this.setLayout(null);
             this.setBounds(x, y, w, h);
             this.setBackground(Color.BLACK);
 
-            this.initComponents(w,h);
-            
+            this.initComponents(w, h);
+
         }
-        
+
         public File getFileRoute() {
             return FileRoute;
         }
@@ -219,14 +215,14 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
             this.textArea = new JTextArea();
             this.textArea.setEditable(false);
             this.textArea.setLineWrap(true);
-            
+
             JScrollPane sp = new JScrollPane(textArea);
             sp.setSize(w, h);
-            
+
             this.add(sp);
         }
 
-        private void updateText() {
+       /* private void updateText() {
             this.textArea.setText("");
             try {
                 this.textArea.append(FileUtils.readFileToString(this.FileRoute, "UTF-8"));
@@ -238,8 +234,8 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
 
         private void clearText() {
             this.textArea.setText("");
-        }
-        
+        }*/
+
     }
-    
+
 }
