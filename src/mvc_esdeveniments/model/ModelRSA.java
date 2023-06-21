@@ -22,7 +22,7 @@ public class ModelRSA {
         pp = new PrimoProbable();
     }
     
-        public BigInteger getN() {
+    public BigInteger getN() {
         return n;
     }
 

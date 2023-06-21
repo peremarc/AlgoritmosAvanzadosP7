@@ -38,10 +38,7 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
     
     private JButton BGenKey;
     
-    private JButton BSetPubKey;
-    private JButton BSetPriKey;
-    
-    protected JButton BSetFileToEncript;
+    private JButton BSetFileToEncript;
     private JButton BClearFileEncript;
     
     private JButton BSetFileToDesEncript;
@@ -80,15 +77,15 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
         this.add(Titulo);
         
         // PANEL ENCRIPTACION
-        panelDesencriptado = new PanelTexto(50, 100, 400, 550);
+        panelDesencriptado = new PanelTexto(50, 100, 500, 550);
         this.add(panelDesencriptado);
         
         BSetFileToEncript = new JButton("Seleccionar Fichero");
-        BSetFileToEncript.setBounds(50, 50, 280, 30);
+        BSetFileToEncript.setBounds(50, 50, 320, 30);
         this.add(BSetFileToEncript);
         
         BClearFileEncript= new JButton("Clear");
-        BClearFileEncript.setBounds(350, 50, 100, 30);
+        BClearFileEncript.setBounds(400, 50, 150, 30);
         this.add(BClearFileEncript);
         
         FileToEncript = new JLabel("FILE NOT SELECTED");
@@ -97,20 +94,20 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
         this.add(FileToEncript);
                 
         // PANEL DESENCRIPTACION
-        panelEncriptado = new PanelTexto(750, 100, 400, 550);
+        panelEncriptado = new PanelTexto(650, 100, 500, 550);
         this.add(panelEncriptado);
         
         BSetFileToDesEncript = new JButton("Seleccionar Fichero");
-        BSetFileToDesEncript.setBounds(750, 50, 280, 30);
+        BSetFileToDesEncript.setBounds(650, 50, 320, 30);
         this.add(BSetFileToDesEncript);
         
         BClearFileDesEncript= new JButton("Clear");
-        BClearFileDesEncript.setBounds(1050, 50, 100, 30);
+        BClearFileDesEncript.setBounds(1000, 50, 150, 30);
         this.add(BClearFileDesEncript);
 
         FileEncripted = new JLabel("FILE NOT SELECTED");
         FileEncripted.setFont(new Font("Britannic Bold", Font.BOLD, 12));
-        FileEncripted.setBounds(750, 650, 400, 30);
+        FileEncripted.setBounds(650, 650, 400, 30);
         this.add(FileEncripted);
         
         ActionListener actionListenerFiles = new ActionListener() {
@@ -129,7 +126,9 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
                         panelDesencriptado.setFile(selectedFile);
                         panelDesencriptado.updateText();
                         FileToEncript.setText("File: " + selectedFile.getName()
-                         + "   Size: " + selectedFile.length());                        return;
+                            + "   Size: " + selectedFile.length()
+                        );
+                        return;
                     }
 
                     panelEncriptado.setFile(selectedFile);
@@ -164,22 +163,22 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
         BClearFileDesEncript.addActionListener(actionListenerClear);
         
         
+        // GENERAR CLAVES
+        BGenKey = new JButton("Generar Clave");
+        BGenKey.setBounds(500, 700, 200, 50);
+        this.add(BGenKey);
+        
         // ENCRIPTAR FICHERO
         BEncriptar = new JButton("Encriptar Fichero");
-        BEncriptar.setBounds(500, 150, 200, 50);
+        BEncriptar.setBounds(200, 700, 200, 50);
         this.add(BEncriptar);
         
         // DESENCRIPTAR FICHERO
         BDesencriptar = new JButton("Desencriptar Fichero");
-        BDesencriptar.setBounds(500, 350, 200, 50);
+        BDesencriptar.setBounds(800, 700, 200, 50);
         this.add(BDesencriptar);
         
-        // GENERAR CLAVES
-        BGenKey = new JButton("Generar Claves");
-        BGenKey.setBounds(500, 550, 200, 50);
-        this.add(BGenKey);
         
-        // CLAVE PUBLICA
         
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -190,7 +189,7 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
      
     @Override
     public void notificar(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }    
            
 
@@ -219,6 +218,8 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
         private void initComponents(int w, int h) {
             this.textArea = new JTextArea();
             this.textArea.setEditable(false);
+            this.textArea.setLineWrap(true);
+            
             JScrollPane sp = new JScrollPane(textArea);
             sp.setSize(w, h);
             
@@ -231,6 +232,7 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
                 this.textArea.append(FileUtils.readFileToString(this.FileRoute, "UTF-8"));
             } catch (IOException ex) {
                 MeuError.informaError(ex);
+                this.textArea.append("Internal error: IOException");
             }
         }
 

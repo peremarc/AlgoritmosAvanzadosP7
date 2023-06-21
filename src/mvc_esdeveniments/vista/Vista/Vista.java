@@ -98,9 +98,9 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
         JButton boto6 = new JButton("Aturar gràfica");
         boto6.addActionListener(this);
         botonera.add(boto6);
-        JButton boto7 = new JButton("Reprèn gràfica");
-        boto7.addActionListener(this);
-        botonera.add(boto7);
+//        JButton boto7 = new JButton("Reprèn gràfica");
+//        boto7.addActionListener(this);
+//        botonera.add(boto7);
 
         JPanel panelLateral = new JPanel(new GridLayout(2, 1));
 //        panelLateral.add(xifres);
