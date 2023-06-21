@@ -7,12 +7,13 @@
  */
 package mvc_esdeveniments.control;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Random;
 import mvc_esdeveniments.MVC_Esdeveniments;
 import mvc_esdeveniments.PerEsdeveniments;
 
-public class Control extends Thread implements PerEsdeveniments {
+public class Control extends Thread implements PerEsdeveniments, Serializable {
 
     private MVC_Esdeveniments prog;
     private String option;

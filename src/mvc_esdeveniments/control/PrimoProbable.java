@@ -5,6 +5,7 @@
  */
 package mvc_esdeveniments.control;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Random;
 
@@ -12,7 +13,7 @@ import java.util.Random;
  *
  * @author mascport
  */
-public class PrimoProbable {
+public class PrimoProbable implements Serializable{
 
     private int tope = 100;
     private Random random;

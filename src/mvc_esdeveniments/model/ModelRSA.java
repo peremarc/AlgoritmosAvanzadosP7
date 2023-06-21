@@ -4,6 +4,13 @@
  */
 package mvc_esdeveniments.model;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.math.BigInteger;
 import mvc_esdeveniments.control.PrimoProbable;
 
@@ -11,19 +18,45 @@ import mvc_esdeveniments.control.PrimoProbable;
  *
  * @author jfher
  */
-public class ModelRSA {
-    
+public class ModelRSA implements Serializable {
+
     private BigInteger n, p, q;
     private BigInteger phiEuler;
     private BigInteger e, d;
     private PrimoProbable pp;
-    
-    public ModelRSA(){
+
+    public ModelRSA() {
         pp = new PrimoProbable();
     }
-    
-        public BigInteger getN() {
+
+    public BigInteger getN() {
         return n;
+    }
+
+    public void escribirClaves(String s, ModelRSA m) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(s+".dat");
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(m);
+            objectOut.close();
+            fileOut.close();
+        } catch (IOException e) {
+            System.out.println("Error al escribir el fichero: " + e.getMessage());
+        }
+    }
+
+    public ModelRSA leerClaves(String s) throws FileNotFoundException, IOException {
+        ModelRSA modelo = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(s+".dat");
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            modelo = (ModelRSA) objectIn.readObject();
+            objectIn.close();
+            fileIn.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error al leer el fichero: " + e.getMessage());
+        }
+        return modelo;
     }
 
     public void setN(BigInteger n) {
@@ -77,5 +110,5 @@ public class ModelRSA {
     public void setPp(PrimoProbable pp) {
         this.pp = pp;
     }
-    
+
 }
