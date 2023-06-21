@@ -26,7 +26,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import mvc_esdeveniments.MVC_Esdeveniments;
 import mvc_esdeveniments.MeuError;
 import mvc_esdeveniments.PerEsdeveniments;
-import org.apache.commons.io.FileUtils;
+
 
 /**
  *
