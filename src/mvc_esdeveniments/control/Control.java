@@ -8,7 +8,6 @@
 package mvc_esdeveniments.control;
 
 import java.math.BigInteger;
-import java.util.Comparator;
 import java.util.Random;
 import mvc_esdeveniments.MVC_Esdeveniments;
 import mvc_esdeveniments.PerEsdeveniments;
@@ -19,14 +18,11 @@ public class Control extends Thread implements PerEsdeveniments {
     private String option;
     private boolean continua;
     private Long a;
-    private int n, c;
 
     public Control(MVC_Esdeveniments p) {
         prog = p;
         continua = true;
         a = 400L;
-        n = 0;
-        c = 1;
     }
 
     @Override
@@ -100,17 +96,6 @@ public class Control extends Thread implements PerEsdeveniments {
     }
 
     public void factoritzarNumFort() {
-        // voy a factorizar
-        factorizar("1236");
-        // voy a factorizar
-        factorizar("56754");
-        // voy a factorizar
-        factorizar("8281247744");
-        // voy a factorizar un número duro
-        String aux = prog.getVista().getTextPanel().getTextArea().getText();
-        BigInteger num = prog.getModel().getNumDuro();
-        aux += "\nLongitud del número duro:" + num.toString().length() + " cifras." + "\nVoy a tardar: " + 298073 * Math.exp(0.8981 * num.toString().length()) * 0.000000001 / (3600 * 24 * 365) + " años";
-        prog.getVista().getTextPanel().getTextArea().setText(aux);
         factorizar(prog.getModel().getNumDuro().toString());
     }
 
@@ -125,10 +110,8 @@ public class Control extends Thread implements PerEsdeveniments {
         BigInteger obj = num.subtract(uno);
         BigInteger test = new BigInteger("3");
         String aux = prog.getVista().getTextPanel().getTextArea().getText();
-        aux += "\nVoy a factorizar " + num;
+        aux += "\n\nVoy a factorizar " + num;
         prog.getVista().getTextPanel().getTextArea().setText(aux);
-//        aux += "\n\nLongitud del número duro:" + num.toString().length() + " cifras." + "\nVoy a tardar: " + 298073 * Math.exp(0.8981 * num.toString().length()) * 0.000000001 / (3600 * 24 * 365) + " años" + "\nVoy a factorizar " + num;
-//        prog.getVista().getTextPanel().getTextArea().setText(aux);
         if (num.remainder(dos).compareTo(zero) == 0) {
             veces = zero.add(zero);
             while (num.remainder(dos).compareTo(zero) == 0) {
@@ -191,31 +174,10 @@ public class Control extends Thread implements PerEsdeveniments {
     public void costeAsintotico() {
         while (continua) {
             a += 100;
-//            if(n==0)n++;
-//            if(c==8){
-//                n++;
-//                c=1;
-//            }
-//            Long candidat = generarNumNXifres2(n);
-//            if(candidat==0 || candidat==1) candidat = generarNumNXifres2(n);
-//            if (prog.getModel().getNumero().isEmpty()) {
-//                prog.getModel().getNumero().add(candidat);
-//            } else {
-//                c++;
-//                while (prog.getModel().getNumero().contains(candidat)|| candidat==0 || candidat==1) {
-//                    candidat = generarNumNXifres2(n);
-//                }
-//                prog.getModel().getNumero().add(candidat);
-//                prog.getModel().getNumero().sort(Comparator.naturalOrder());
-//            }
             prog.getModel().getNumero().add(a);
             // Factorizamos el número generado y guardamos el tiempo
             long tiempo = factorizar(a.toString());
-//            long tiempo = factorizar(candidat.toString());
-//            int index = prog.getModel().getNumero().indexOf(candidat);
-//            prog.getModel().getTiempo().add(index,tiempo);
             prog.getModel().getTiempo().add(tiempo);
-            
             // Pintamos
             prog.getVista().notificar("pinta");
 
