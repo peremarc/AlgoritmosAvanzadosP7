@@ -12,11 +12,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import mvc_esdeveniments.control.PrimoProbable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import mvc_esdeveniments.vista.Vista.Notification;
 
 /**
  *
@@ -27,44 +25,48 @@ public class ModelRSA implements Serializable{
     private BigInteger n, p, q;
     private BigInteger phiEuler;
     private BigInteger e, d;
+    private boolean compactar;
     
     public ModelRSA(){
+    }
+    
+    public void escribirClaves() {
+        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");  
+        Date date = new Date();              
+        String filePath = "keys/key_" + formatter.format(date) + ".dat";
+        try {
+            ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream(filePath));
+            objectOut.writeObject(this);
+            objectOut.close();
+        } catch (IOException e) {
+            System.out.println("Error al escribir el fichero: " + e.getMessage());
+            new Notification("Internal Error: IOException");
+            return;
+        }
+        new Notification("Key 'key_" + formatter.format(date) + ".dat' Generated");
+    }
+
+    public static ModelRSA leerClaves(String s){
+        ModelRSA modelo = null;
+        try {
+            String filePath = "keys/" + s;
+            ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream(filePath));
+            modelo = (ModelRSA) objectIn.readObject();
+            objectIn.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFoundException: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IOException: " + e.getMessage());
+        }
+        
+        return modelo;
     }
     
     public BigInteger getN() {
         return n;
     }
-
-
-    public void escribirClaves(String s, ModelRSA m) {
-        try {
-            String filePath = "files/" + s + ".dat";
-            Files.createDirectories(Paths.get("files"));
-            FileOutputStream fileOut = new FileOutputStream(filePath);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(m);
-            objectOut.close();
-            fileOut.close();
-        } catch (IOException e) {
-            System.out.println("Error al escribir el fichero: " + e.getMessage());
-        }
-    }
-
-    public ModelRSA leerClaves(String s) throws FileNotFoundException, IOException {
-        ModelRSA modelo = null;
-        try {
-            String filePath = "files/" + s + ".dat";
-            FileInputStream fileIn = new FileInputStream(filePath);
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-            modelo = (ModelRSA) objectIn.readObject();
-            objectIn.close();
-            fileIn.close();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error al leer el fichero: " + e.getMessage());
-        }
-        return modelo;
-    }
-
 
     public void setN(BigInteger n) {
         this.n = n;
@@ -108,6 +110,14 @@ public class ModelRSA implements Serializable{
 
     public void setD(BigInteger d) {
         this.d = d;
+    }
+    
+    public boolean isCompactar() {
+        return compactar;
+    }
+
+    public void setCompactar(boolean compactar) {
+        this.compactar = compactar;
     }
     
 }

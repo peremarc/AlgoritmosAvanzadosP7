@@ -1,0 +1,174 @@
+Práctica Capítulo 7.- Primalidad (2023)
+Juan Francisco Hernández Fernández 
+Marco Martínez González
+Pere Marc Monserrat Calbo
+Jordi Sevilla Marí
+Resumen—En este documento se explica nuestra implementación de la práctica “Primalidad”. En este, explicamos como hemos implementado el patrón MVC, el funcionamiento de la interfaz gráfica de nuestro programa, el funcionamiento de nuestros algoritmos probabilistas, la estructura de los datos utilizada para solucionar el problema e información sobre las particularidades del funcionamiento y una guía de uso.
+Términos del Índice— Algoritmos probabilistas, Miller-Rabin, Primalidad, Factorización, Encriptación, Desencriptación, Patrón MVC, Patrón por eventos
+I. INTRODUCCIÓN
+En este último taller se ha desarrollado con patrón MVC una aplicación que analiza el coste computacional de factorizar grandes números.
+La presente memoria se acompaña del proyecto del programa Java. Además de un vídeo de unos 10 minutos, donde se muestra cómo es la distribución del código, cómo se compila el proyecto y se ejecuta y se explican los trabajos realizados.
+II. Entorno de programación empleado 
+Para la implementación de la práctica se ha utilizado Apache NetBeans IDE 17.
+IV. Conceptos del patrón Modelo Vista Controlador
+El patrón de arquitectura de software Modelo-Vista-Controlador (MVC) se utiliza comúnmente en el desarrollo de aplicaciones de software. El modelo MVC divide una aplicación en tres componentes principales: el modelo, la vista y el controlador. Cada uno de estos componentes tiene una función específica y juntos, proporcionan una forma eficiente y escalable para desarrollar aplicaciones de software. A continuación, se presentan algunas ventajas del uso del modelo MVC en la programación informática:
+Separación de responsabilidades: El modelo MVC divide las tareas de una aplicación en tres componentes distintos, cada uno de los cuales tiene una responsabilidad específica. El modelo maneja los datos y la lógica de negocios, la vista es responsable de la presentación de los datos y la interfaz de usuario, y el controlador maneja la entrada del usuario y coordina las acciones entre el modelo y la vista. Esta separación de responsabilidades hace que sea más fácil para los desarrolladores trabajar en cada componente de manera independiente, lo que puede mejorar la calidad del código y reducir los errores.
+Facilidad de mantenimiento: La separación de responsabilidades también hace que sea más fácil mantener una aplicación MVC. Si necesita cambiar algo en la lógica de negocios, por ejemplo, solo tendrá que hacer cambios en el modelo, sin tener que preocuparse por el efecto en la vista o el controlador. Esto facilita el mantenimiento y la evolución de la aplicación a medida que cambian los requisitos.
+Reutilización de código: Al separar la lógica de negocios y la presentación de la interfaz de usuario, el patrón MVC permite reutilizar el código en diferentes partes de la aplicación o incluso en diferentes aplicaciones. Por ejemplo, si tiene una aplicación que utiliza el mismo modelo de datos en varias vistas, puede reutilizar el modelo en cada vista en lugar de tener que crear uno nuevo para cada una. Esto reduce la duplicación de código y hace que el desarrollo sea más eficiente.
+Pruebas unitarias: El patrón MVC facilita las pruebas unitarias. Cada componente de la aplicación se puede probar de forma independiente, lo que facilita la identificación y corrección de errores. Las pruebas de unidad también son más fáciles de automatizar y ejecutar repetidamente, lo que ayuda a garantizar que la aplicación sea estable y confiable.
+Escalabilidad: El patrón MVC es escalable y permite la adición de nuevas características o módulos sin afectar la funcionalidad existente. El uso de un modelo de datos separado también permite la escalabilidad horizontal, lo que significa que se pueden agregar más servidores o recursos para aumentar la capacidad de la aplicación.
+En general, el uso del patrón MVC en la programación informática puede mejorar la calidad del código, facilitar el mantenimiento y la evolución de la aplicación, mejorar la reutilización del código, facilitar las pruebas unitarias y permitir la escalabilidad.
+Fig. 1. Patrón MVC 
+IV. Patrón por eventos 
+El patrón por eventos es un patrón de diseño de software utilizado en la programación de aplicaciones que se basan en eventos y notificaciones. Este patrón se basa en la idea de que los objetos en un programa pueden enviar y recibir eventos, y los demás objetos pueden responder a estos eventos de manera apropiada.
+En términos simples, el patrón por eventos consiste en establecer un sistema de notificación en el que un objeto, conocido como emisor, envía una señal de evento a uno o varios objetos, conocidos como oyentes o suscriptores. Estos objetos oyentes pueden responder a la señal de evento tomando una acción o ejecutando un método determinado.
+En nuestro caso, utilizamos el patrón por eventos para nuestra aplicación de escritorio. Cuando un usuario hace clic en alguno de los botones, el objeto botón emite un evento de clic. Los objetos suscriptores como el objeto de controlador de eventos están a la espera de este evento y responden a él realizando el cálculo o la acción solicitada.
+El patrón por eventos es un enfoque muy útil para la programación de aplicaciones interactivas y en tiempo real, ya que permite que las aplicaciones respondan de manera rápida y eficiente a los eventos del usuario. También permite una mayor modularidad del código, lo que facilita su mantenimiento y evolución.
+VI. Implementación del patrón MVC
+Nuestra implementación del patrón Modelo-Vista-Controlador (MVC) es una combinación de dos enfoques. Por un lado, utilizamos un enfoque centralizado en el cual tenemos una interfaz implementada en el main que se encarga de recibir notificaciones de los componentes. Este enfoque se asemeja al MVC centralizado puro. Por otro lado, también utilizamos elementos del patrón por eventos, en el cual el controlador cuenta con un puntero del modelo, permitiendo que las comunicaciones se produzcan de forma directa entre dichos componentes con simples llamadas a métodos, sin la necesidad de pasar por el main. Debido a que hemos combinado características de ambos patrones según nuestras necesidades, no podemos definir nuestra implementación de forma específica a un solo tipo de MVC.
+Al iniciar el programa, se inicia el modelo y la vista. El modelo no tiene puntero a ningún otro componente, ya que la comunicación con el modelo se realiza de forma unidireccional, desde el controlador o la vista hacia el modelo. Sin embargo, el controlador y la vista tienen punteros tanto al modelo como al main. 
+III. Algoritmo probabilista
+Un algoritmo probabilista es un tipo de algoritmo que utiliza la aleatoriedad o la probabilidad como parte de su proceso de toma de decisiones. A diferencia de los algoritmos deterministas, que producen siempre la misma salida para una entrada dada, los algoritmos probabilistas pueden producir resultados diferentes en diferentes ejecuciones para la misma entrada.
+n, el sistema de cifrado RSA es un algoritmo criptográfico ampliamente utilizado que se basa en la dificultad de factorizar números grandes en sus factores primos. Su funcionamiento se basa en el uso de claves públicas y privadas, donde el cifrado se realiza con la clave pública y el descifrado con la clave privada correspondiente. A lo largo de su historia, el sistema RSA ha demostrado su seguridad y se ha convertido en una herramienta vital para proteger la confidencialidad de la información en el mundo digital.
+VIII. Implementación del controlador
+Para la implementación del controlador hemos utilizado las clases Control.java, PrimoProbable.java y RSA. Contienen los algoritmos utilizados para generar números aleatorios de N cifras, números duros, encriptar y desencriptar mediante el método de RSA y el resto de funcionalidades del programa.
+Control.java
+El controlador tiene los siguientes atributos:
+prog: puntero al programa principal.
+option: cadena de texto para guardar el botón clicado por el usuario.
+continua: variable booleana que controla la ejecución del hilo que grafica el coste de factorización.
+a: variable para guardar el último cuyo coste de factorización ha sido graficado.
+Además de los atributos tendremos un constructor y los siguientes métodos:
+métodos públicos:
+notificar(): método sobreescrito para lanzar el hilo de ejecución.
+generarNumNXifres(): método para generar un BigInteger aleatorio de N cifras y guardarlo en el modelo. El número generado se utilizará para determinar su primalidad.
+generarNumNXifres2(): método que devuelve un long aleatorio de N cifras.
+esPrimo(): método para determinar la primalidad de un número.
+generarNumFort(): método para genera un número duro obtenido como el producto entre dos números primos grandes.
+run(): método sobreescrito para lanzar el hilo de ejecución seleccionado. 
+factoritzarNumFort(): método que llama a factorizar() y le pasa como argumento un número duro.
+factorizar(): método que recibe un número como cadena de texto y lo factoriza.
+costeAsintotico(): método que guarda un número y el tiempo de factorización y lo notifica a la vista para que lo represente en la gráfica.
+aturarGrafica(): método para detener el avance de la representación gráfica.
+reprendreGrafica(): método para continuar con la generación de números, su factorización y la representación gráfica.
+Los atributos de la clase son los siguientes:
+tope: número máximo de veces que se lanzará el algoritmo Miller-Rabin.
+random: instancia de la clase Random que se usará para generar números aleatorios.
+Además del constructor tenemos los siguientes métodos:
+Métodos públicos:
+esPrimo(): hay dos métodos en función del tipo de argumento. Sirve para determinar si el número que se le pasa por parámetro es primo.
+otroProbablePrimo(): método para obtener otro número primo a partir de uno dado. 
+Métodos privados:
+Miller_Rabin(): método que permite determinar si un número es primo llamando al método B().
+B(): método que permite comprobar si un número es primo por extensión del teorema de Fermat.
+random(): método para generar un número aleatorio en el rango especificado por parámetro.
+RSA.java
+Esta clase será la encargada de realizar los cálculos necesarios para la encriptación de un documento mediante el uso del algoritmo de encriptacion RSA. Esta clase cuenta tiene los siguientes atributos:
+tamañoNum: variable de tipo entero que determinará el tamaño en cuanto a digitos que tendrán la P y Q que se usarán para obtener las claves de encriptación y desencriptación
+pp: puntero a la clase de PrimoProbable.
+mRSA: puntero al modelo del RSA.
+blicos:
+setmRSA(): Función que nos permite asignar valor al puntero del ModelRSA, en el caso de que no se haya usado el constructor que ya lo inicializa al instanciar la clase.
+generaPQ(): método que permite el cálculo necesario para generar los números primero P y Q que nos permiten realizar el encriptado.
+generarClaves(): método que utiliza los números primos P y Q para generar las claves mediante el encriptado RSA.
+encriptar(String s): método que recibe por parámetro el nombre de un archivo que contiene el mensaje que se tiene que encriptar mediante el uso de las claves generales.
+encriptarLinea(String linea): método que recibe por parámetro un string y devuelve un array de BigInteger en el cual cada posición es un carácter encriptado.
+desencriptarLinea(BigInteger[] msgEnc): método que recibe un array de BigInteger y mediante el uso de las claves desencripta carácter a carácter y devuelve una String compuesto por los carácteres concatenados.
+escribeFileEncript(String file, ArrayList<BigInteger[]> msg): método utilizado para escribir el mensaje encriptado msg en el fichero cuyo nombre es file.
+leeArchivoEncript(String file): método utilizado para leer el mensaje encriptado que se encuentra contenido en el archivo con nombre file.
+compactaArchivo(String file): método que realiza una reducción del número de carácteres requeridos para conservar el mensaje encriptado.
+escribirArchivoCompacto(ArrayList<String> contenido): método que permite escribir en un archivo “mensajeCompacto.txt” el mensaje compactado mediante el método anterior.
+leerArchivoCompacto(): método encargado de la lectura del archivo encriptado compacto.
+Métodos privados:
+descompactaLinea(String s): método que recibe por parámetro una línea del archivo encriptado compacto y realiza las operaciones necesarias para devolverla a su estado encriptado sin compactar.
+compactaLinea(String linea): método que compacta una línea encriptada. Coge números en parejas y los transforma a carácter para que ocupe la mitad.
+convertirLinea(String line): método que recibe una línea compuesta por un conjunto de números y espacios en blanco y devuelve un array de BigInteger haciendo un split en función de los espacios en blanco. Cada posición del array representa un carácter encriptado.
+IX. Implementación del Modelo
+Para la implementación del modelo de datos hemos usado la clase Model.java y ModelRSA. La primera contendrá todos los datos usados para la resolución del algoritmo probabilístico de Miller-Rabin y almacenará la solución una vez el controlador haya acabado su ejecución.  La segunda contendrá las claves, las variables necesarias para crearlas y encriptar y desencriptar mensajes, además de los métodos de guardado y recuperación de las claves
+og: puntero al programa principal.
+numNXifres: número aleatorio de N cifras.
+numDuro: número duro.
+tiempo: array que guarda el tiempo invertido en factorizar un número.
+numero: array que guarda los números que se han factorizado. 
+Además de los atributos, tendremos un constructor y los siguientes métodos públicos:
+setNumXifres(): método para asignar un valor al atributo numXifres.
+getNumXifres(): método que devuelve el número de dígitos que tiene el número.
+getNumDuro(): devuelve el valor del número duro almacenado en numDuro.
+setNumDuro(): método para asignar un valor al atributo numDurol.
+getTiempo(): devuelve el array de tiempos.
+getNumero(): devuelve el array de números que se han factorizado.
+ métodos de esta clase son: 
+Métodos públicos:
+escribirClaves(String s, ModelRSA m): método encargado de escribir en un archivo con extensión .dat y nombre s, el modelo m.
+leerClaves(String s): método encargado de la lectura de los objetos contenidos en el archivo s.dat.
+getN(): método getter que permite recuperar la variable N.
+getP(): método getter que permite recuperar la variable P.
+getQ(): método getter que permite recuperar la variable Q.
+getE(): método getter que permite recuperar la variable E.
+getD(): método getter que permite recuperar la variable D.
+getPhiEuler(): método getter que permite recuperar la variable PhiEuler.
+setP(BigInteger p): método setter que permite dar valor a la variable P.
+setQ(BigInteger q): método setter que permite dar valor a la variable Q.
+setPhiEuler(BigInteger phiEuler): método setter que permite dar valor a la variable PhiEuler.
+setE(BigInteger e): método setter que permite dar valor a la variable E.
+setD(BigInteger d): método setter que permite dar valor a la variable D.
+X. Implementación de la Vista
+Para la implementación de la vista usaremos 3 clases:
+1. Vista.java: JFrame que contendrá todos los componentes de la interfaz y permitirá la interacción entre el usuario y la aplicación.
+2. GraphPanel.java: JPanel encargado de la visualización del gráfico del coste asintótico de factorización.
+3s atributos de esta clase son:
+PANEL_W, PANEL_H: permite controlar el tamaño de la ventana de la GUI.
+mb: barra del menú
+menu1, menu2: menús en la barra
+mi1, mi2, mi3, mi4: contenido del menú
+option: cadena de texto que guarda el botón que se ha pulsado.
+textPanel: instancia de la clase TextPanel.
+graphPanel: instancia de la clase GraphPanel.
+d: ventana emergente.
+Además de los atributos, tenemos un constructor y los siguientes métodos:
+Métodos privados:
+init(): método para inicializar los componentes de la vista.
+Métodos públicos:
+mostrar(): hace visible la representación de los datos.
+actionPerformed(): método sobreescrito para atender los eventos de click que realiza el usuario.
+notificar(): método sobre escrito para desencadenar la acción indicada por el usuario.
+getTextPanel(): devuelve la instancia de la clase TextPanel.
+pinta(): cambia entre los distintos paneles según el display seleccionado.
+ta clase es una extensión de JPanel para visualizar en una gráfica el coste asintótico de tiempo de computación de la factorización de una secuencia creciente de números.
+Los atributos de esta clase son los siguientes:
+prog: puntero al programa principal.
+unitX, unitY: relación entre pìxels y las unidades de ambos ejes.
+mII. Vídeo Demostrativo
+En la cabecera de cada clase del proyecto NetBeans, encontraremos un enlace a un vídeo de YouTube donde se muestra la estructura del proyecto, las partes más relevantes del código fuente y el funcionamiento de la aplicación con su interfaz gráfica. El ratio de la CPU de la máquina con la que se ha grabado el vídeo es de 0,9.
+XIV. Distribución del trabajo
+En esta práctica han colaborado todos los miembros del equipo en similar medida, añadiendo cada uno funcionalidades a la aplicación a medida que han surgido nuevas ideas y funcionalidades.
+XV. Guía de usuario
+Lenerar num. N xifres: se abre una ventana donde hay que introducir el número de dígitos que deseamos que tenga el número y después de clicar sobre aceptar se genera el número aleatorio y se muestra por pantalla.
+Determinar primalitat: realiza el test de primalidad de Miller-Rabin sobre el número generado de N cifras.
+Generar num. fort: genera un número duro aleatorio obtenido mutliplicando dos números primos grandes.
+Factorizar num. fort: factoriza el número duro generado anteriormente. Se da una cota superior del tiempo que tardará en factorizarlo. Además, se muestra la factorización de varios números de tamaño creciente y se muestra el tiempo que tardan. 
+Graficar cost factorització: realiza la representación gráfica del tiempo de computación para factorizar una serie creciente de números. Se empieza factorizando el número 400 y se incrementa sumándole un entero entre 0 y 100 en cada iteración.
+Aturar gráfica: permite interrumpir el hilo de ejecución que calcula la factorización.
+En la barra de menú se sitúan dos menús:
+Mesurament: permite calcular el ratio del rendimiento de la máquina sobre la que se ejecuta el programa y se muestra por consola. 
+Ronente
+Dígitos
+Tiempo (nanosec)
+3
+2
+1385100
+5
+3
+8530300
+7
+4
+9068301
+13
+8
+224002401
+17
+10
+2787309399
+19
+12
+1

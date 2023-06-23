@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import mvc_esdeveniments.MVC_Esdeveniments;
 import mvc_esdeveniments.model.ModelRSA;
 
 /**
@@ -24,18 +25,13 @@ import mvc_esdeveniments.model.ModelRSA;
 public class RSA {
 
     //Variables
-    private final int tamañoNum;
+    private MVC_Esdeveniments prog;
     private final PrimoProbable pp;
+    private int tamañoNum;
     private ModelRSA mRSA;
-
-    public RSA(int tam, ModelRSA m) {
-        this.tamañoNum = tam;
-        this.mRSA = m;
-        this.pp = new PrimoProbable();
-    }
     
-    public RSA(int tam) {
-        this.tamañoNum = tam;
+    public RSA(MVC_Esdeveniments prog) {
+        this.prog = prog;
         this.mRSA = null;
         this.pp = new PrimoProbable();
     }
@@ -44,11 +40,19 @@ public class RSA {
         return mRSA != null;
     }
     
-    public void setmRSA(ModelRSA mRSA) {
-        this.mRSA = mRSA;
+    public void setmRSA(String mRSA) {
+        // if "leerClaves" fails, mRSA will be null;
+        this.mRSA = ModelRSA.leerClaves(mRSA);;
     }
     
-    public void generaPQ() {
+    public void newRSAModel(int tam){
+        this.tamañoNum = tam;
+        this.mRSA = new ModelRSA();
+        this.generaPQ();
+        this.generarClaves();
+    }
+    
+    private void generaPQ() {
         BigInteger p, q;
         p = new BigInteger(tamañoNum, 50, new Random());
         while (!pp.esPrimo(p)) {
@@ -62,7 +66,7 @@ public class RSA {
         mRSA.setQ(q);
     }
 
-    public void generarClaves() {
+    private void generarClaves() {
         BigInteger n, e, d, phiEuler;
         /* n = p*q */
         n = mRSA.getP().multiply(mRSA.getQ());
@@ -93,7 +97,7 @@ public class RSA {
         BigInteger[] msgEncript;
         ArrayList<BigInteger[]> mensaje = new ArrayList<BigInteger[]>();
         try {
-            File archivo = new File(s);
+            File archivo = new File("files/" + s);
             Scanner scanner = new Scanner(archivo);
             while (scanner.hasNextLine()) {
                 linea = scanner.nextLine();
@@ -103,8 +107,11 @@ public class RSA {
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("No se encontró el archivo " + s);
+            this.prog.notificar("RSAVista:errorEncripting");
+            return;
         }
-        escribeFileEncript("pruebaEncriptado.txt", mensaje);
+        escribeFileEncript("enc_" + s , mensaje);
+        this.prog.notificar("RSAVista:showEncripted");
     }
 
     public BigInteger[] encriptarLinea(String linea) {
@@ -145,7 +152,7 @@ public class RSA {
 
     public void escribeFileEncript(String file, ArrayList<BigInteger[]> msg) {
         try {
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter("files/" + file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             for (int i = 0; i < msg.size(); i++) {
@@ -165,7 +172,7 @@ public class RSA {
 
     public void leeArchivoEncript(String file) {
         try {
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader("files/" + file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String line;
@@ -183,7 +190,7 @@ public class RSA {
     public void compactaArchivo(String file) {
         try {
             ArrayList<String> contenido = new ArrayList<String>();
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader("files/" + file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -262,6 +269,14 @@ public class RSA {
         }
 
         return numerosBigInt;
+    }
+
+    public void setTam(int tam) {
+        this.tamañoNum = tam;
+    }
+
+    public void guardarClave() {
+        this.mRSA.escribirClaves();
     }
 
 }

@@ -8,11 +8,9 @@
 package mvc_esdeveniments;
 
 //import mesurament.Mesurament;
-import java.io.IOException;
 import mvc_esdeveniments.control.Control;
 import mvc_esdeveniments.control.RSA;
 import mvc_esdeveniments.model.Model;
-import mvc_esdeveniments.model.ModelRSA;
 import mvc_esdeveniments.vista.Vista.Launcher;
 import mvc_esdeveniments.vista.Vista.RSAVista;
 import mvc_esdeveniments.vista.Vista.Vista;
@@ -21,28 +19,30 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
 
     private Model mod;    // Punter al Model del patró
     private Vista vis;    // Punter a la Vista del patró
-    private RSAVista rsaVis;
     private Control con;  // punter al Control del patró
+    
+    private RSAVista visRSA; // Punter a la Vista del RSA
+    private RSA conRSA;
 
-    private void inicio() throws IOException {
+    private void inicioPrim() {
         mod = new Model(this);
         con = new Control(this);
         vis = new Vista("Pràctica 7", this);
-        ModelRSA m1 = new ModelRSA();
-        RSA rsa = new RSA(300,m1);
-        m1.escribirClaves("claves", m1);
-        ModelRSA m2 = m1.leerClaves("claves");
-        System.out.println(m1.getN() == m2.getN());
         vis.mostrar();
     }
     
+    private void inicioRSA(){
+        visRSA = new RSAVista(this);
+        conRSA = new RSA(this);
+    }
+    
     private void launch() {
-        Launcher launcher = new Launcher(this);
+        new Launcher(this);
     }
 
     
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         /*
         ModelRSA mRSA = new ModelRSA();
         RSA rsa = new RSA(600,mRSA);
@@ -54,28 +54,55 @@ public class MVC_Esdeveniments implements PerEsdeveniments {
         rsa.leerArchivoCompacto();
         (new MVC_Esdeveniments()).inicio();
         */
-        (new MVC_Esdeveniments()).inicio();
+        
         (new MVC_Esdeveniments()).launch();
     }
 
     @Override
     public void notificar(String s) {
-        switch(s){
-            case "launch=primal":
-                if(vis == null)
-                    (vis = new Vista("Pràctica 7", this)).mostrar();
-                break;
+        System.out.println(s);
+        String[] message = s.split(":");
+        switch(message[0]){
             case "launch=RSA":
-                if(rsaVis == null)
-                    rsaVis = new RSAVista(this);
+                if(visRSA == null)
+                    inicioRSA();
                 break;
             case "Generar claus":
-            case "Encriptar fitxer":
-            case "Desencriptar fitxer":
-                if (con != null) {
-                    con.notificar(s);
-                    con = null;
+                if(message.length != 2){
+                    System.out.println("Not enough arguments");
+                    break;
                 }
+                conRSA.newRSAModel(Integer.parseInt(message[1]));
+                conRSA.guardarClave();
+                break;
+            case "Encriptar fitxer":
+                if(message.length != 3){
+                    System.out.println("Not enough arguments");
+                    break;
+                }
+                conRSA.setmRSA(message[1]);
+                if(!conRSA.isModelReady())
+                    // TODO
+                    //return new Notification("Key selected not Valid");
+                    //System.out.println("Key selected not Valid");
+                    return;
+                conRSA.encriptar(message[2]);
+                break;
+            case "Desencriptar fitxer":
+                conRSA.setmRSA(message[1]);
+                if(!conRSA.isModelReady())
+                    return;
+                conRSA.leeArchivoEncript(message[2]);
+                //TODO: GUARDAR ARCHIVO DESENCRIPTADO, NO MOSTRARLO POR TERMINAL
+                //conRSA.desencriptar(messafe[2]);
+                break;
+            case "RSAVista":
+                visRSA.notificar(message[1]);
+                break;
+            // PRIMAL FUNCTIONS    
+            case "launch=primal":
+                if(vis == null)
+                    inicioPrim();
                 break;
             case "Generar num. N xifres":
             case "Determinar primalitat":
