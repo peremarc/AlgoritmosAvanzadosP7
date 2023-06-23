@@ -29,29 +29,29 @@ public class RSA {
     private final PrimoProbable pp;
     private int tamañoNum;
     private ModelRSA mRSA;
-    
+
     public RSA(MVC_Esdeveniments prog) {
         this.prog = prog;
         this.mRSA = null;
         this.pp = new PrimoProbable();
     }
-    
-    public boolean isModelReady(){
+
+    public boolean isModelReady() {
         return mRSA != null;
     }
-    
+
     public void setmRSA(String mRSA) {
         // if "leerClaves" fails, mRSA will be null;
         this.mRSA = ModelRSA.leerClaves(mRSA);;
     }
-    
-    public void newRSAModel(int tam){
+
+    public void newRSAModel(int tam) {
         this.tamañoNum = tam;
         this.mRSA = new ModelRSA();
         this.generaPQ();
         this.generarClaves();
     }
-    
+
     private void generaPQ() {
         BigInteger p, q;
         p = new BigInteger(tamañoNum, 50, new Random());
@@ -110,7 +110,7 @@ public class RSA {
             this.prog.notificar("RSAVista:errorEncripting");
             return;
         }
-        escribeFileEncript("enc_" + s , mensaje);
+        escribeFileEncript("enc_" + s, mensaje);
         this.prog.notificar("RSAVista:showEncripted");
     }
 
@@ -174,16 +174,19 @@ public class RSA {
         try {
             FileReader fileReader = new FileReader("files/" + file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-
+            FileWriter fileWriter = new FileWriter("files/mensajeDesencriptado.txt");
+            BufferedWriter writer = new BufferedWriter(fileWriter);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 BigInteger[] lineaBigInt = convertirLinea(line);
                 String s = desencriptarLinea(lineaBigInt);
-                System.out.println(s);
+                writer.write(s);
+                writer.newLine();
             }
+            writer.close();
             bufferedReader.close();
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error leyendo el archivo");
+            System.out.println("Ha ocurrido un error leyendo o escribiendo en el archivo");
         }
     }
 
@@ -225,7 +228,6 @@ public class RSA {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String s = descompactaLinea(line);
-                //String s = desencriptarLinea(lineaBigInt);
                 System.out.println(s);
             }
             bufferedReader.close();

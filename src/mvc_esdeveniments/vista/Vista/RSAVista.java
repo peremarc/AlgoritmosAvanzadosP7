@@ -27,7 +27,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import mvc_esdeveniments.MVC_Esdeveniments;
 import mvc_esdeveniments.MeuError;
 import mvc_esdeveniments.PerEsdeveniments;
-import org.apache.commons.io.FileUtils;
+//import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -126,7 +126,7 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
                     /* Actualizamos los paneles a partir del fichero Seleccionado */
                     if(e.getSource().equals(BSetFileToEncript)){
                         panelDesencriptado.setFile(selectedFile);
-                        panelDesencriptado.updateText();
+                       // panelDesencriptado.updateText();
                         FileToEncript.setText("File: " + selectedFile.getName()
                             + "   Size: " + selectedFile.length()
                         );
@@ -134,7 +134,7 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
                     }
 
                     panelEncriptado.setFile(selectedFile);
-                    panelEncriptado.updateText();
+                   // panelEncriptado.updateText();
                     FileEncripted.setText("File: " + selectedFile.getName()
                          + "   Size: " + selectedFile.length()); 
                 } else {
@@ -248,7 +248,7 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
                 file = this.panelDesencriptado.getFileRoute();
                 File fileEncripted = new File("files/enc_" + file.getName());
                 this.panelEncriptado.setFile(fileEncripted);
-                this.panelEncriptado.updateText();
+               // this.panelEncriptado.updateText();
                 FileEncripted.setText("File: " + fileEncripted.getName()
                             + "   Size: " + fileEncripted.length());
                 break;
@@ -256,7 +256,7 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
                 file = this.panelEncriptado.getFileRoute();
                 File fileToEncript = new File("files/des_" + file.getName());
                 this.panelDesencriptado.setFile(fileToEncript);
-                this.panelDesencriptado.updateText();
+                //this.panelDesencriptado.updateText();
                 FileToEncript.setText("File: " + fileToEncript.getName()
                             + "   Size: " + fileToEncript.length());
                 break;
@@ -300,19 +300,19 @@ public class RSAVista extends JFrame implements PerEsdeveniments{
             this.add(sp);
         }
 
-        protected void updateText() {
+     /*   protected void updateText() {
             this.textArea.setText("");
             if(this.FileRoute.length()> 500000){
                 this.textArea.append("File to Big to Show\nFilesize: " + this.FileRoute.length());
                 return;
             }
             try {
-                this.textArea.append(FileUtils.readFileToString(this.FileRoute, "UTF-8"));
+               // this.textArea.append(FileUtils.readFileToString(this.FileRoute, "UTF-8"));
             } catch (IOException ex) {
                 MeuError.informaError(ex);
                 this.textArea.append("Internal error: IOException");
             }
-        }
+        }*/
 
         protected void clearText() {
             this.textArea.setText("");

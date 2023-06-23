@@ -30,7 +30,7 @@ import mvc_esdeveniments.PerEsdeveniments;
 
 public class Vista extends JFrame implements ActionListener, PerEsdeveniments {
 
-    private static final int PANEL_W = 1000, PANEL_H = 500;
+    private static final int PANEL_W = 1000, PANEL_H = 200;
 
     private MVC_Esdeveniments prog;
 
